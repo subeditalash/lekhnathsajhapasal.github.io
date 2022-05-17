@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import config from '../Khalti/khaltiConfig'
+
 import KhaltiCheckout from "khalti-checkout-web";
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
+import axios from "axios";
 
 
 
@@ -29,9 +30,65 @@ function OrderScreen({ match, history }) {
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
+    
+    const successPaymentHandler = (paymentResult) => {
+        dispatch(payOrder(orderId, paymentResult))
+    }
+
+    let config = {
+        // replace this key with yours
+        publicKey: "test_public_key_cde01715d46d4d04ae4f8a95d1066629",
+        productIdentity: "123766",
+        productName: "Saja Pasal",
+        productUrl: "http://127.0.0.1:8000/#/",
+        eventHandler: {
+            
+          onSuccess(payload) {
+            
+            // hit merchant api for initiating verfication
+            console.log(payload);
+            let data = {
+              token: payload.token,
+              amount: payload.amount,
+            };
+      
+            axios
+              .get(
+                `https://meslaforum.herokuapp.com/khalti/${data.token}/${data.amount}/${"test_secret_key_269219a9e9e740e59dfd3edba942bd4b"}`
+              )
+              .then((response) => {
+                
+                console.log(response.data);
+                alert("Thank you for generosity");
+                
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          },
+          // onError handler is optional
+          onError(error) {
+            // handle errors
+            console.log(error);
+          },
+          onClose() {
+            console.log("widget is closing");
+          },
+        },
+        paymentPreference: [
+          "KHALTI",
+          "EBANKING",
+          "MOBILE_BANKING",
+          "CONNECT_IPS",
+          "SCT",
+        ],
+      };
+      
+      
 
   
     let checkout = new KhaltiCheckout(config);
+    
     let buttonStyles = {
         backgroundColor: "purple",
         padding: "10px",
@@ -63,7 +120,7 @@ function OrderScreen({ match, history }) {
             dispatch(getOrderDetails(orderId))
         } else if (!order.isPaid) {
             if (!window.Khalti) {
-                
+                setSdkReady(true)
             } else {
                 setSdkReady(true)
             }
@@ -71,9 +128,7 @@ function OrderScreen({ match, history }) {
     }, [dispatch, order, orderId, successPay, successDeliver])
 
 
-    const successPaymentHandler = (paymentResult) => {
-        dispatch(payOrder(orderId, paymentResult))
-    }
+    
 
     const deliverHandler = () => {
         dispatch(deliverOrder(order))
