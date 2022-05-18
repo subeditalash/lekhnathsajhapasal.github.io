@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { listOrders } from '../actions/orderActions'
+import OrderFilter from '../components/orderFilter'
 
 function OrderListScreen({ history }) {
 
@@ -16,20 +17,21 @@ function OrderListScreen({ history }) {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
-
+    let keyword = history.location.search
 
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
-            dispatch(listOrders())
+            dispatch(listOrders(keyword))
         } else {
             history.push('/login')
         }
 
-    }, [dispatch, history, userInfo])
+    }, [dispatch, history, keyword, userInfo])
 
 
     return (
         <div>
+            <OrderFilter/>
             <h1>Orders</h1>
             {loading
                 ? (<Loader />)

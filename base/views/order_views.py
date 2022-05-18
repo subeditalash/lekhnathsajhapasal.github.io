@@ -1,3 +1,4 @@
+from tracemalloc import start
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +10,7 @@ from base.serializers import ProductSerializer, OrderSerializer
 
 from rest_framework import status
 from datetime import datetime
-
+from django.db.models import Q
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -77,7 +78,11 @@ def getMyOrders(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getOrders(request):
-    orders = Order.objects.all()
+    query = request.query_params.get('keyword1')
+    if query == None:
+        query = ''
+    orders = Order.objects.filter(Q(isPaid__icontains=query))
+    
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
