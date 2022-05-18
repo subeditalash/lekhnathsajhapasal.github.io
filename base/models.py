@@ -1,4 +1,5 @@
 from email.policy import default
+from itertools import product
 from pickle import TRUE
 from unicodedata import category
 from django.db import models
@@ -27,8 +28,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-
+class Category(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    _id = models.AutoField(primary_key=True,editable=False)
+    def _str_(self):
+        return str(self.name)
+        
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

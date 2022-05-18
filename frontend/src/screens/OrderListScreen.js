@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, Dropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { listOrders } from '../actions/orderActions'
-import OrderFilter from '../components/orderFilter'
 
 function OrderListScreen({ history }) {
 
@@ -17,21 +16,33 @@ function OrderListScreen({ history }) {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
-    let keyword = history.location.search
 
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
-            dispatch(listOrders(keyword))
+            dispatch(listOrders())
         } else {
             history.push('/login')
         }
 
-    }, [dispatch, history, keyword, userInfo])
+    }, [dispatch, history, userInfo])
 
 
     return (
         <div>
-            <OrderFilter/>
+            <Dropdown >
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Select paid
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu  >
+                    <Dropdown.Item
+                    >Paid</Dropdown.Item>
+                    <Dropdown.Item
+                        >not Paid</Dropdown.Item>
+                    
+                </Dropdown.Menu>
+            </Dropdown>
+            
             <h1>Orders</h1>
             {loading
                 ? (<Loader />)

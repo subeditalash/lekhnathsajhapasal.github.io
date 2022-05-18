@@ -78,7 +78,7 @@ def getMyOrders(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getOrders(request):
-    query = request.query_params.get('keyword1')
+    query = request.query_params.get('value')
     if query == None:
         query = ''
     orders = Order.objects.filter(Q(isPaid__icontains=query))
