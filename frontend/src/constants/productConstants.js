@@ -37,4 +37,16 @@ export const PRODUCT_Category_REQUEST = 'PRODUCT_Category_REQUEST'
 export const PRODUCT_Category_SUCCESS = 'PRODUCT_Category_SUCCESS'
 export const PRODUCT_Category_FAIL = 'PRODUCT_Category_FAIL'
 
+export const PRODUCT_Create_Category_REQUEST = 'PRODUCT_Category_REQUEST'
+export const PRODUCT_Create_Category_SUCCESS = 'PRODUCT_Category_SUCCESS'
+export const PRODUCT_Create_Category_FAIL = 'PRODUCT_Category_FAIL'
+
+export const PRODUCT_Delete_Category_REQUEST = 'PRODUCT_Category_REQUEST'
+export const PRODUCT_Delete_Category_SUCCESS = 'PRODUCT_Category_SUCCESS'
+export const PRODUCT_Delete_Category_FAIL = 'PRODUCT_Category_FAIL'
+
+export const PRODUCT_Details_Category_REQUEST = 'PRODUCT_Category_REQUEST'
+export const PRODUCT_Details_Category_SUCCESS = 'PRODUCT_Category_SUCCESS'
+export const PRODUCT_Details_Category_FAIL = 'PRODUCT_Category_FAIL'
+
 

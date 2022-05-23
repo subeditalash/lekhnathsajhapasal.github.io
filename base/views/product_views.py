@@ -1,4 +1,4 @@
-from unicodedata import name
+from unicodedata import category, name
 from xml.etree.ElementTree import QName
 from django.shortcuts import render
 
@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from base.models import Product, Review
-from base.serializers import ProductSerializer
+from base.models import Product, Review, Category
+from base.serializers import ProductSerializer, CategorySerializer
 from django.db.models import Q
 
 from rest_framework import status
@@ -104,7 +104,7 @@ def updateProduct(request, pk):
 def deleteProduct(request, pk):
     product = Product.objects.get(_id=pk)
     product.delete()
-    return Response('Producted Deleted')
+    return Response('Product Deleted')
 
 
 @api_view(['POST'])
@@ -162,3 +162,34 @@ def createProductReview(request, pk):
         product.save()
 
         return Response('Review Added')
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def createCategory(request):
+    user = request.user
+
+    category = Category.objects.create(
+        name='Category Name'
+    
+    )
+    serializer = CategorySerializer(category, many=False)
+    return Response(serializer.data)
+    
+@api_view(['GET'])
+def getCategoryProducts(request):
+    category = Category.objects.all()
+    serializer = CategorySerializer(category, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getCategoryProduct(request):
+    category = Category.objects.get(_id=pk)
+    serializer = CategorySerializer(category, many=False)
+    return Response(serializer.data)
+    
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteCategory(request, pk):
+    category = Category.objects.get(_id=pk)
+    category.delete()
+    return Response('category Deleted')

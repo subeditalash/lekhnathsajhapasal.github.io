@@ -30,6 +30,23 @@ import {
     PRODUCT_TOP_SUCCESS,
     PRODUCT_TOP_FAIL,
 
+    PRODUCT_Create_Category_REQUEST,
+    PRODUCT_Create_Category_FAIL,
+    PRODUCT_Create_Category_SUCCESS,
+
+    PRODUCT_Category_SUCCESS,
+    PRODUCT_Category_FAIL,
+    PRODUCT_Category_REQUEST,
+
+    PRODUCT_Delete_Category_FAIL,
+    PRODUCT_Delete_Category_REQUEST,
+    PRODUCT_Delete_Category_SUCCESS,
+
+    PRODUCT_Details_Category_SUCCESS,
+    PRODUCT_Details_Category_FAIL,
+    PRODUCT_Details_Category_REQUEST,
+
+
    
 } from '../constants/productConstants'
 
@@ -48,6 +65,46 @@ export const productListReducer = (state = { products: [] }, action) => {
             }
 
         case PRODUCT_LIST_FAIL:
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }
+}
+export const CategoryListReducer = (state = { category: [] }, action) => {
+    switch (action.type) {
+        case PRODUCT_Category_REQUEST:
+            return { loading: true, products: [] }
+
+        case PRODUCT_Category_SUCCESS:
+            return {
+                loading: false,
+                products: action.payload.products,
+                page: action.payload.page,
+                pages: action.payload.pages
+            }
+
+        case PRODUCT_Category_FAIL:
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }
+}
+export const CategoryDetailsListReducer = (state = { category: [] }, action) => {
+    switch (action.type) {
+        case PRODUCT_Details_Category_REQUEST:
+            return { loading: true, products: [] }
+
+        case PRODUCT_Details_Category_SUCCESS:
+            return {
+                loading: false,
+                products: action.payload.products,
+                page: action.payload.page,
+                pages: action.payload.pages
+            }
+
+        case PRODUCT_Details_Category_FAIL:
             return { loading: false, error: action.payload }
 
         default:
@@ -89,6 +146,21 @@ export const productDeleteReducer = (state = {}, action) => {
             return state
     }
 }
+export const CategoryDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_Delete_Category_REQUEST:
+            return { loading: true }
+
+        case PRODUCT_Delete_Category_SUCCESS:
+            return { loading: false, success: true }
+
+        case PRODUCT_Delete_Category_FAIL:
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }
+}
 
 
 
@@ -101,6 +173,24 @@ export const productCreateReducer = (state = {}, action) => {
             return { loading: false, success: true, product: action.payload }
 
         case PRODUCT_CREATE_FAIL:
+            return { loading: false, error: action.payload }
+
+        case PRODUCT_CREATE_RESET:
+            return {}
+
+        default:
+            return state
+    }
+}
+export const CategoryCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_Create_Category_REQUEST:
+            return { loading: true }
+
+        case PRODUCT_Create_Category_SUCCESS:
+            return { loading: false, success: true, product: action.payload }
+
+        case PRODUCT_Create_Category_FAIL:
             return { loading: false, error: action.payload }
 
         case PRODUCT_CREATE_RESET:

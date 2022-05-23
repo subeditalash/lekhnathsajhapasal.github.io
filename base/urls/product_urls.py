@@ -16,6 +16,12 @@ urlpatterns = [
    
     path('update/<str:pk>/', views.updateProduct, name="product-update"),
     path('delete/<str:pk>/', views.deleteProduct, name="product-delete"),
+    
+    path('category/', views.getCategoryProducts, name='Category-products'),
+    path('category/<str:pk>/', views.getCategoryProduct, name='Category-products'),
+    path('category/create/', views.createCategory, name='Category-create'),
+    path('category/delete/<str:pk>/', views.deleteCategory, name='Category-delete'),
+    
 
     
 

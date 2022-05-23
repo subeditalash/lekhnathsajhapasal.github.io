@@ -29,6 +29,24 @@ import {
     PRODUCT_TOP_SUCCESS,
     PRODUCT_TOP_FAIL,
 
+    PRODUCT_Create_Category_REQUEST,
+    PRODUCT_Create_Category_FAIL,
+    PRODUCT_Create_Category_SUCCESS,
+
+    PRODUCT_Category_SUCCESS,
+    PRODUCT_Category_FAIL,
+    PRODUCT_Category_REQUEST,
+
+    PRODUCT_Delete_Category_FAIL,
+    PRODUCT_Delete_Category_REQUEST,
+    PRODUCT_Delete_Category_SUCCESS,
+
+    PRODUCT_Details_Category_REQUEST,
+    PRODUCT_Details_Category_SUCCESS,
+    PRODUCT_Details_Category_FAIL,
+
+    
+
    
 
 } from '../constants/productConstants'
@@ -54,6 +72,47 @@ export const listProducts = (keyword = '') => async (dispatch) => {
         })
     }
 }
+export const listCategory = () => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_Category_REQUEST })
+
+        const { data } = await axios.get(`/api/products/category`)
+
+        dispatch({
+            type: PRODUCT_Category_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_Category_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+export const listCategoryDetails = (_id) => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_Details_Category_REQUEST })
+
+        const { data } = await axios.get(`/api/products/category/${_id}`)
+
+        dispatch({
+            type: PRODUCT_Details_Category_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_Details_Category_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
 
 export const listTopProducts = () => async (dispatch) => {
     try {
@@ -138,6 +197,42 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         })
     }
 }
+export const deleteCategory = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: PRODUCT_Delete_Category_REQUEST
+        })
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.delete(
+            `/api/products/category/delete/${id}/`,
+            config
+        )
+
+        dispatch({
+            type: PRODUCT_Delete_Category_SUCCESS,
+        })
+
+
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_Delete_Category_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
 
 
 
@@ -173,6 +268,43 @@ export const createProduct = () => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: PRODUCT_CREATE_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+export const createCategory = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: PRODUCT_Create_Category_REQUEST
+        })
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(
+            `/api/products/create/`,
+            {},
+            config
+        )
+        dispatch({
+            type: PRODUCT_Create_Category_SUCCESS,
+            payload: data,
+        })
+
+
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_Create_Category_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,

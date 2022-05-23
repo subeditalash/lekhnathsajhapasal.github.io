@@ -7,6 +7,7 @@ import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import { listProducts } from '../actions/productActions'
+import Category from '../components/Category'
 
 
 
@@ -24,6 +25,7 @@ function HomeScreen({ history }) {
 
     return (
         <div>
+            <Category/>
             
             {!keyword && <ProductCarousel />}
 
