@@ -62,7 +62,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model= Category
-        field='__all__'
+        fields ='__all__'
 
     
     

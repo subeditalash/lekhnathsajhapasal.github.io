@@ -78,10 +78,9 @@ def getMyOrders(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getOrders(request):
-    query = request.query_params.get('value')
-    if query == None:
-        query = ''
-    orders = Order.objects.filter(Q(isPaid__icontains=query))
+    value = request.query_params.get('value')
+    is_paid = value == '1'
+    orders = Order.objects.filter(isPaid=is_paid)
     
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)

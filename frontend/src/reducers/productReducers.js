@@ -79,7 +79,7 @@ export const CategoryListReducer = (state = { category: [] }, action) => {
         case PRODUCT_Category_SUCCESS:
             return {
                 loading: false,
-                products: action.payload.products,
+                products: action.payload,
                 page: action.payload.page,
                 pages: action.payload.pages
             }
